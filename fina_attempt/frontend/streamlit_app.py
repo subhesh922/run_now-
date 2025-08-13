@@ -768,19 +768,29 @@ with st.sidebar:
 
     st.markdown("---")
     st.markdown("### Settings")
-    api_url = st.text_input("Backend API URL", value=API_URL_DEFAULT)
+    #api_url = st.text_input("Backend API URL", value=API_URL_DEFAULT)
 
+    # st.caption(f"Subproduct options loaded: **{len(SUBPRODUCT_OPTIONS)}**")
+    # st.session_state.subproducts_selected = st.multiselect(
+    #     "Choose one or more subproducts",
+    #     options=SUBPRODUCT_OPTIONS,
+    #     default=st.session_state.subproducts_selected if st.session_state.subproducts_selected else SUBPRODUCT_OPTIONS[:1],
+    # )
+    # if not st.session_state.subproducts_selected:
+    #     st.warning("Select at least one subproduct.")
     st.caption(f"Subproduct options loaded: **{len(SUBPRODUCT_OPTIONS)}**")
-    st.session_state.subproducts_selected = st.multiselect(
-        "Choose one or more subproducts",
-        options=SUBPRODUCT_OPTIONS,
-        default=st.session_state.subproducts_selected if st.session_state.subproducts_selected else SUBPRODUCT_OPTIONS[:1],
+    st.session_state.subproduct_selected = st.selectbox(
+    "Choose a subproduct",
+    options=SUBPRODUCT_OPTIONS,
+    index=SUBPRODUCT_OPTIONS.index(st.session_state.subproduct_selected) 
+          if "subproduct_selected" in st.session_state and st.session_state.subproduct_selected in SUBPRODUCT_OPTIONS
+          else 0
     )
-    if not st.session_state.subproducts_selected:
-        st.warning("Select at least one subproduct.")
+    if not st.session_state.subproduct_selected:
+        st.warning("Select a subproduct.")
 
 # ===== Uploaders =====
-st.markdown("#### 1) Upload PRDs / Specs (.docx / .csv / .xlsx)")
+st.markdown("#### 1) Upload DOCs / Specs (.docx / .csv / .xlsx)")
 # (No legacy .doc — python-docx can’t parse it)
 prd_files = st.file_uploader(
     "Upload one or more PRD/spec files",
